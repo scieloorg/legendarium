@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import re
 
-
 class Legendarium(object):
 
     def __init__(self, acron_title='', year_pub='', volume='', number='',
@@ -38,7 +37,11 @@ class Legendarium(object):
         Clean the year removing all caracter and keep just 4/1 numbers.
         """
         if self.year_pub:
-            return ' {0}'.format(self._get_numbers(self.year_pub)[:4])
+            year = self._get_numbers(self.year_pub)
+            if len(year) == 4:
+                return ' {0}'.format(year[:4])
+            else:
+                raise ValueError('Probably not a valid year')
         else:
             return ''
 
@@ -75,7 +78,7 @@ class Legendarium(object):
 
     def get_issue(self):
         """
-        Method to build the issue, it can use a suffix separator or not.
+        Method to build the issue.
         """
         volume = self._clean_volume()
         number = self._clean_number()
@@ -90,9 +93,17 @@ class Legendarium(object):
 
     def get_article(self):
         """
-        Method to build the article, it can use a suffix separator or not.
+        Method to build the article.
         """
         article = ''
+
+        if self.fpage:
+            if not self.fpage.isdigit():
+                raise ValueError('Fist page is not a digit.')
+
+        if self.lpage:
+            if not self.lpage.isdigit():
+                raise ValueError('Last page is not a digit.')
 
         if self.fpage and self.lpage:
             article = '{0}-{1}'.format(self.fpage, self.lpage)
@@ -117,85 +128,3 @@ class Legendarium(object):
         args = [self.get_journal(), self.get_issue(), self.get_article()]
 
         return '{0}{1}{2}'.format(*args)
-
-
-if __name__ == '__main__':
-
-    kwargs = {'volume': 'v19', 'acron_title': 'Revista X', 'year_pub': 2016,
-              'article_id': '019278765', 'number': '7', 'fpage': "123",
-              'lpage': "987"}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste com todos os params")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-    kwargs = {'volume': 'v19', 'acron_title': 'Revista X',
-              'article_id': '019278765', 'number': '7'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param year_pub")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-
-    kwargs = {'acron_title': 'Revista X', 'year_pub': 2016,
-              'article_id': '019278765', 'number': '7'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param volume")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-
-    kwargs = {'volume': 'v19', 'acron_title': 'Revista X', 'year_pub': 2016,
-              'article_id': '019278765'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param number")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-
-    kwargs = {'acron_title': 'Revista X', 'year_pub': 2016,
-              'article_id': '019278765'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param volume e number")
-    print(legend.stamp + "\n")
-
-    ###########################################################################
-
-    kwargs = {'volume': 'v19', 'acron_title': 'Revista X', 'year_pub': 2016,
-              'number': '7'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param artigo")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-
-    kwargs = {'acron_title': 'Revista X', 'year_pub': 2016}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste somente o acron_title e year_pub")
-    print(legend.stamp + "\n")
-
-    ############################################################################
-
-    kwargs = {'volume': 'v19', 'year_pub': 2016, 'article_id': '019278765',
-              'number': '7'}
-
-    legend = Legendarium(**kwargs)
-
-    print("Teste sem o param acron_title")
-    print(legend.stamp + "\n")
-
-    ############################################################################
