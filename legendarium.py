@@ -41,9 +41,9 @@ class Legendarium(object):
             if len(year) == 4:
                 return ' {0}'.format(year[:4])
             else:
-                raise ValueError('Probably not a valid year')
+                raise ValueError(u'Probably not a valid year')
         else:
-            return ''
+            return u''
 
     def _clean_volume(self):
         """
@@ -70,11 +70,11 @@ class Legendarium(object):
         if self.acron_title:
             title = self._clean_acron_title()
         else:
-            raise ValueError('The journal is mandatory to mount the bibliographic legend')
+            raise ValueError(u'The journal is mandatory to mount the bibliographic legend')
 
         year_pub = self._clean_year_pub()
 
-        return '{0}{1}'.format(title, year_pub)
+        return u'{0}{1}'.format(title, year_pub)
 
     def get_issue(self):
         """
@@ -84,29 +84,29 @@ class Legendarium(object):
         number = self._clean_number()
 
         if number:
-            number = '({0})'.format(number)
+            number = u'({0})'.format(number)
 
         if volume or number:
-            return '{0}{1}{2}'.format(';', volume, number)
+            return u'{0}{1}{2}'.format(';', volume, number)
         else:
-            return ''
+            return u''
 
     def get_article(self):
         """
         Method to build the article.
         """
-        article = ''
+        article = u''
 
         if self.fpage:
             if not self.fpage.isdigit():
-                raise ValueError('Fist page is not a digit.')
+                raise ValueError(u'Fist page is not a digit.')
 
         if self.lpage:
             if not self.lpage.isdigit():
-                raise ValueError('Last page is not a digit.')
+                raise ValueError(u'Last page is not a digit.')
 
         if self.fpage and self.lpage:
-            article = '{0}-{1}'.format(self.fpage, self.lpage)
+            article = u'{0}-{1}'.format(self.fpage, self.lpage)
         elif self.fpage:
             article = self.fpage
         elif self.lpage:
@@ -116,7 +116,7 @@ class Legendarium(object):
         else:
             return article
 
-        return '{0}{1}'.format(':', article)
+        return u'{0}{1}'.format(':', article)
 
     @property
     def stamp(self):
@@ -127,4 +127,4 @@ class Legendarium(object):
         """
         args = [self.get_journal(), self.get_issue(), self.get_article()]
 
-        return '{0}{1}{2}'.format(*args)
+        return u'{0}{1}{2}'.format(*args)
