@@ -9,17 +9,24 @@ deploy:
     secure: BNccKdDQxOyr4hVcpCr3NmX7i7EoNFJjUjZmP5RLaDuHk1AOkUSTVLjiWlIm5IlCjyhb42LxowOyjQcxFw/0Xc7BEeczrkGYuLT68pqAdvpA/eeEdnpeJ18Aqq1bHSrQ73iEWN8dkIAStD8y+MFPiUsAD5u3V/acZpOd4Hq3izDbtnS3x+FeB6xCxCjcu6in0KtCA4odFETZEv4Dhaw1d7x1+lZN/rBrkV0Nptt2x6QdwtJDhZ7rtfQY2FUgOXm7oIHcKIv69/vv2dwJAD4TzY3LVEH3OJeSMfT209oijpQGFaLBoUuxthLgPF3teltyJh+pOZx7LVzV+2YmfVT/IHSIHvoOfO5zBT4Kwl+q7lIK9X/cDKOSHhF0lmkcP908xmrZXywiQChb0UcHWrQbBR6VErm3DIvrTbkI4tgvUyGHGarmT/1DLJ8mdV8FvpB1bYYsLkXXXXDi0CGCZ29z+6siWZYZIm1ssbbDuQiHWW18QvP6jGJ5XOHsFAErgQbOXrJE9ogP73CANNGvMiXfPJaz2H67isD1/xcgaL8CfuwzQiHyrfDt3/HuKPwsyUEV3hKSkGzV/+zxwh03+Sid+PSDGMqkh+jFlXvhUqF0axGf+wQeAX7Ra39tHAoJiQlUI48ZkKB2Y+bZtIG5N2nIfeXz2R76OLGyhIYQneFnWBM=
   provider: pypi
   user: jamil
-env:
-- TOXENV=py35
-- TOXENV=py34
-- TOXENV=py33
-- TOXENV=py27
-- TOXENV=py26
-- TOXENV=pypy
 install:
 - pip install -U tox
+sudo: false
 language: python
-python:
-- '3.5'
-script:
-- tox
+matrix:
+    include:
+      - python: 2.7
+        env: TOX_ENV=py27
+      - python: 3.3
+        env: TOX_ENV=py33
+      - python: 3.4
+        env: TOX_ENV=py34
+      - python: 3.5
+        env: TOX_ENV=py35
+      - python: nightly
+        env: TOX_ENV=py36
+      - python: pypy
+        env: TOX_ENV=pypy
+      - python: 3.5
+        env: TOX_ENV=flake8
+script: tox -e $TOX_ENV
