@@ -105,14 +105,14 @@ class Legendarium(object):
             if not self.lpage.isdigit():
                 raise ValueError(u'Last page is not a digit.')
 
-        if self.fpage and self.lpage:
+        if self.article_id:
+            article = self.article_id
+        elif self.fpage and self.lpage:
             article = u'{0}-{1}'.format(self.fpage, self.lpage)
         elif self.fpage:
             article = self.fpage
         elif self.lpage:
             article = self.lpage
-        elif self.article_id:
-            article = self.article_id
         else:
             return article
 
