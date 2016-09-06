@@ -6,6 +6,7 @@ Development Lead
 ----------------
 
 * Jamil Atta Junior <jamil.atta@scielo.org>
+* Juan Ernesto Funez <juan.funez@scielo.org>
 
 Contributors
 ------------

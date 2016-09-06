@@ -1,7 +1,5 @@
 # coding: utf-8
 
-from __future__ import print_function
-
 import re
 
 class Legendarium(object):
@@ -30,7 +28,10 @@ class Legendarium(object):
         """
         Get just numbers in a text.
         """
-        return re.sub("[^0-9]", "", text)
+        if text:
+            return re.sub("[^0-9]", "", text)
+        else:
+            return ''
 
     def _clean_year_pub(self):
         """
@@ -55,7 +56,10 @@ class Legendarium(object):
         """
         Clean the number stripped the beginning and the end of the string.
         """
-        return self.number.strip()
+        if self.number:
+            return self.number.strip()
+        else:
+            return ''
 
     def _clean_acron_title(self):
         """
@@ -96,14 +100,6 @@ class Legendarium(object):
         Method to build the article.
         """
         article = u''
-
-        if self.fpage:
-            if not self.fpage.isdigit():
-                raise ValueError(u'Fist page is not a digit.')
-
-        if self.lpage:
-            if not self.lpage.isdigit():
-                raise ValueError(u'Last page is not a digit.')
 
         if self.article_id:
             article = self.article_id

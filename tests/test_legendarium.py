@@ -123,20 +123,24 @@ class TestLegendarium(unittest.TestCase):
 
     def test_build_legend_with_wrong_value_fpage(self):
 
-        self.dict_leg['fpage'] = "oja9sn10" # Wrong value in fpage
+        del(self.dict_leg['article_id'])
+
+        self.dict_leg['fpage'] = "oja9sn10" # Wrong value in fpage, return wrong
 
         leg = Legendarium(**self.dict_leg)
 
-        self.assertRaises(ValueError, lambda: leg.stamp)
+        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):oja9sn10-200', leg.stamp)
 
 
     def test_build_legend_with_wrong_value_lpage(self):
 
-        self.dict_leg['lpage'] = "oja9sn10" # Wrong value in lpage
+        del(self.dict_leg['article_id'])
+
+        self.dict_leg['lpage'] = "oja9sn10" # Wrong value in lpage, return wrong
 
         leg = Legendarium(**self.dict_leg)
 
-        self.assertRaises(ValueError, lambda: leg.stamp)
+        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):154-oja9sn10', leg.stamp)
 
 
     def test_build_legend_with_just_fpage(self):
@@ -204,6 +208,22 @@ class TestLegendarium(unittest.TestCase):
         leg = Legendarium(**self.dict_leg)
 
         self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):e00120416', leg.stamp)
+
+    def test_build_acron_when_number_is_None(self):
+
+        self.dict_leg['number'] = None
+
+        leg = Legendarium(**self.dict_leg)
+
+        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67:e00120416', leg.stamp)
+
+    def test_build_acron_when_volume_is_None(self):
+
+        self.dict_leg['volume'] = None
+
+        leg = Legendarium(**self.dict_leg)
+
+        self.assertEqual(u'Rev.Mal-Estar Subj 2011;(9):e00120416', leg.stamp)
 
 if __name__ == "__main__":
     unittest.main()
