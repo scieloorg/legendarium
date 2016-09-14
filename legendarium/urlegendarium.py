@@ -126,7 +126,7 @@ class URLegendarium(object):
 
             REVISTA/
         """
-        args = [self.url_journal_seg()]
+        args = [self.get_journal_seg()]
 
         return u'{0}/'.format(*args)
 
@@ -137,7 +137,7 @@ class URLegendarium(object):
 
             REVISTA/nVOLUMEvNUMBER
         """
-        args = [self.url_journal_seg(), self.url_issue_seg()]
+        args = [self.get_journal_seg(), self.get_issue_seg()]
 
         return u'{0}/{1}'.format(*args)
 
@@ -148,6 +148,6 @@ class URLegendarium(object):
 
             REVISTA/nVOLUMEvNUMBER/e1928639
         """
-        args = [self.url_journal_seg(), self.url_issue_seg(), self.url_article_seg()]
+        args = [self.get_journal_seg(), self.get_issue_seg(), self.get_article_seg()]
 
         return u'{0}/{1}/{2}'.format(*args)
