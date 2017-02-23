@@ -6,6 +6,9 @@ Legendarium
 * Compatible With: python 2.7 and 3.5
 
 [![Build Status](https://travis-ci.org/scieloorg/legendarium.svg)](https://travis-ci.org/scieloorg/legendarium)
+[![Code Health](https://landscape.io/github/scieloorg/legendarium/master/landscape.svg?style=flat)](https://landscape.io/github/scieloorg/legendarium/master)
+[![Updates](https://pyup.io/repos/github/scieloorg/legendarium/shield.svg)](https://pyup.io/repos/github/scieloorg/legendarium/)
+[![Python 3](https://pyup.io/repos/github/scieloorg/legendarium/python-3-shield.svg)](https://pyup.io/repos/github/scieloorg/legendarium/)
 
 See Build: https://travis-ci.org/scieloorg/legendarium
 
@@ -27,4 +30,4 @@ Develop API Usage
 For develop version
 ====================
 
--e git+git@github.com:scieloorg/legendarium#egg=legendarium
+`pip install -e git+git@github.com:scieloorg/legendarium#egg=legendarium`
