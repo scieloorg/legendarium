@@ -109,11 +109,7 @@ class URLegendarium(object):
 
         if year or volume or number or suppl:
             # We give preference to number
-            if number:
-                return u'{0}.{1}{2}'.format(year, volume, number)
-            # Check if has supplement text
-            if suppl:
-                return u'{0}.{1}{2}'.format(year, volume, suppl)
+            return u'{0}.{1}{2}{3}'.format(year, volume, number, suppl)
         else:
             raise ValueError(u'Year or Volume or Year must exists to form URL Issue Segment')
 

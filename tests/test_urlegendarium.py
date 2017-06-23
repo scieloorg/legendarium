@@ -23,16 +23,20 @@ class TestLegendarium(unittest.TestCase):
         self.assertEqual(u'spm/', leg.url_journal)
 
     def test_build_url_issue_with_all_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
+
         leg = URLegendarium(**self.dict_leg)
 
         self.assertEqual(u'spm/2011.v67n9', leg.url_issue)
 
     def test_build_url_article_with_all_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
         leg = URLegendarium(**self.dict_leg)
 
         self.assertEqual(u'spm/2011.v67n9/e00120416', leg.url_article)
 
     def test_build_url_article_without_eloaction_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
         del(self.dict_leg['article_id'])
 
         leg = URLegendarium(**self.dict_leg)
@@ -40,6 +44,7 @@ class TestLegendarium(unittest.TestCase):
         self.assertEqual(u'spm/2011.v67n9/154-200', leg.url_article)
 
     def test_build_url_article_without_fpage_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
         del(self.dict_leg['article_id'])
         del(self.dict_leg['fpage'])
 
@@ -48,6 +53,7 @@ class TestLegendarium(unittest.TestCase):
         self.assertEqual(u'spm/2011.v67n9/200', leg.url_article)
 
     def test_build_url_article_without_lpage_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
         del(self.dict_leg['article_id'])
         del(self.dict_leg['lpage'])
 
@@ -74,13 +80,19 @@ class TestLegendarium(unittest.TestCase):
 
         self.assertRaises(ValueError, lambda: leg.url_issue)
 
-    def test_build_url_supplment_issue(self):
+    def test_build_url_issue_supplment_volume(self):
 
         del(self.dict_leg['number'])  # Remove the number
 
         leg = URLegendarium(**self.dict_leg)
 
         self.assertEqual(u'spm/2011.v67suppl3', leg.url_issue)
+
+    def test_build_url_issue_supplment_number(self):
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9suppl3', leg.url_issue)
 
 
 if __name__ == "__main__":
