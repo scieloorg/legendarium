@@ -6,12 +6,13 @@ import re
 class Legendarium(object):
 
     def __init__(self, acron_title='', year_pub='', volume='', number='',
-                 fpage='', lpage='', article_id=''):
+                 fpage='', lpage='', article_id='', suppl_number=''):
 
         self.acron_title = acron_title
         self.year_pub = str(year_pub)
         self.volume = volume
         self.number = number
+        self.suppl_number = suppl_number
         self.fpage = fpage
         self.lpage = lpage
         self.article_id = article_id
@@ -68,6 +69,12 @@ class Legendarium(object):
         """
         return self.acron_title.strip()
 
+    def _clean_suppl_number(self):
+        """
+        Clean the suppl_number stripped the beginning and the end of the string.
+        """
+        return self.suppl_number.strip()
+
     def get_journal(self):
         """
         Method to build the journal, it can have ``year_pub`` or not.
@@ -87,9 +94,10 @@ class Legendarium(object):
         """
         volume = self._clean_volume()
         number = self._clean_number()
+        suppl = self._clean_suppl_number()
 
-        if number:
-            number = u'({0})'.format(number)
+        if number or suppl:
+            number = u'({0}{1})'.format(number, '{0}suppl.{1}'.format(' ' if number else '', suppl) if suppl else '')
 
         if volume or number:
             return u'{0}{1}{2}'.format(';', volume, number)
