@@ -2,15 +2,17 @@
 
 import re
 
+
 class URLegendarium(object):
 
     def __init__(self, acron='', year_pub='', volume='', number='',
-                 fpage='', lpage='', article_id=''):
+                 fpage='', lpage='', article_id='', suppl_number=''):
 
         self.acron = acron
         self.year_pub = str(year_pub)
         self.volume = volume
         self.number = number
+        self.suppl_number = suppl_number
         self.fpage = fpage
         self.lpage = lpage
         self.article_id = article_id
@@ -67,6 +69,12 @@ class URLegendarium(object):
         """
         return self.acron.strip()
 
+    def _clean_suppl_number(self):
+        """
+        Clean the supplement number stripped the beginning and the end of the string.
+        """
+        return self.suppl_number.strip()
+
     def get_journal_seg(self):
         """
         Method to build the journal URL.
@@ -85,6 +93,10 @@ class URLegendarium(object):
         year = self._clean_year_pub()
         volume = self._clean_volume()
         number = self._clean_number()
+        suppl = self._clean_suppl_number()
+
+        if suppl:
+            suppl = u'suppl{0}'.format(suppl)
 
         if number:
             number = u'n{0}'.format(number)
@@ -95,10 +107,11 @@ class URLegendarium(object):
         if year:
             year = u'{0}'.format(year)
 
-        if year or volume or number:
-            return u'{0}.{1}{2}'.format(year, volume, number)
+        if year or volume or number or suppl:
+            # We give preference to number
+            return u'{0}.{1}{2}{3}'.format(year, volume, number, suppl)
         else:
-           raise ValueError(u'Year or Volume or Year must exists to form URL Issue Segment')
+            raise ValueError(u'Year or Volume or Year must exists to form URL Issue Segment')
 
     def get_article_seg(self):
         """
