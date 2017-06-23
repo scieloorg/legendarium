@@ -2,6 +2,7 @@
 
 import re
 
+
 class Legendarium(object):
 
     def __init__(self, acron_title='', year_pub='', volume='', number='',
