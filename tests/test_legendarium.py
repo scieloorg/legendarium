@@ -78,7 +78,7 @@ class TestLegendarium(unittest.TestCase):
 
         self.assertEqual(u'Rev.Mal-Estar Subj:e00120416', leg.stamp)
 
-    def test_build_legend_without_volume_and_number_and_year_pub_(self):
+    def test_build_legend_without_volume_and_number_and_year_pub(self):
 
         del(self.dict_leg['volume'])  # Remove the volume
         del(self.dict_leg['number'])  # Remove the number
