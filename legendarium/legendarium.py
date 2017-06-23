@@ -73,7 +73,10 @@ class Legendarium(object):
         """
         Clean the suppl_number stripped the beginning and the end of the string.
         """
-        return self.suppl_number.strip()
+        if self.suppl_number:
+            return self.suppl_number.strip()
+        else:
+            return ''
 
     def get_journal(self):
         """
