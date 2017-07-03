@@ -1,238 +1,140 @@
 # coding: utf-8
 import unittest
 
-from legendarium.legendarium import Legendarium
+from legendarium.legendarium import (
+    Legendarium,
+    short_format,
+    descriptive_format,
+    get_numbers
+)
 
 
 class TestLegendarium(unittest.TestCase):
 
     def setUp(self):
-        self.dict_leg = {'acron_title': u'Rev.Mal-Estar Subj',
-                         'year_pub': u'2011',
-                         'volume': u'67',
-                         'number': u'9',
-                         'suppl_number': u'3',
-                         'fpage': u'154',
-                         'lpage': u'200',
-                         'article_id': u'e00120416'
-                         }
+        self.sample = {
+            'title': u'Revista Mal-Estar Subjetivo',
+            'short_title': u'Rev.Mal-Estar Subj',
+            'pubdate': u'2011',
+            'volume': u'67',
+            'number': u'9',
+            'fpage': u'154',
+            'lpage': u'200',
+            'elocation': u'e00120416',
+            'suppl': u'3'
+        }
 
-    def test_build_legend_with_all_param(self):
-        leg = Legendarium(**self.dict_leg)
+        self.legendarium = Legendarium(**self.sample)
 
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9 suppl.3):e00120416', leg.stamp)
+    def test_format(self):
 
-    def test_build_legend_without_acron_title(self):
+        result = self.legendarium.format('%T, %Y, %v(%n), %p')
 
-        del(self.dict_leg['acron_title'])  # Remove the journal
+        self.assertEqual(
+            'Revista Mal-Estar Subjetivo, 2011, 67(9), 154-200',
+            result
+        )
 
-        leg = Legendarium(**self.dict_leg)
+    def test_short_format(self):
 
-        self.assertRaises(ValueError, lambda: leg.stamp)
+        data = dict(self.sample)
+        del(data['fpage'])
+        del(data['lpage'])
+        del(data['elocation'])
+        result = short_format(**data)
 
-    def test_build_legend_without_year_pub(self):
+        self.assertEqual(
+            'Rev.Mal-Estar Subj, 2011 67(9) suppl. 3',
+            result
+        )
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['year_pub'])  # Remove the publisher year
+    def test_descriptive_format(self):
 
-        leg = Legendarium(**self.dict_leg)
+        data = dict(self.sample)
+        result = descriptive_format(**data)
 
-        self.assertEqual(u'Rev.Mal-Estar Subj;67(9):e00120416', leg.stamp)
+        self.assertEqual(
+            'Revista Mal-Estar Subjetivo, 2011 volume: 67 number: 9 supplement: 3 position: 154-200',
+            result
+        )
 
-    def test_build_legend_without_volume(self):
+    def test_pages(self):
+        result = self.legendarium.pages
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['volume'])  # Remove the volume
+        self.assertEqual(
+            '154-200',
+            result
+        )
 
-        leg = Legendarium(**self.dict_leg)
+    def test_pages_1(self):
 
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;(9):e00120416', leg.stamp)
+        data = dict(self.sample)
+        del(data['fpage'])
+        result = Legendarium(**data).pages
 
-    def test_build_legend_without_number_and_suppl_number(self):
+        self.assertEqual(
+            '200',
+            result
+        )
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['number'])  # Remove the number
+    def test_pages_2(self):
 
-        leg = Legendarium(**self.dict_leg)
+        data = dict(self.sample)
+        del(data['lpage'])
+        result = Legendarium(**data).pages
 
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67:e00120416', leg.stamp)
+        self.assertEqual(
+            '154',
+            result
+        )
 
-    def test_build_legend_without_volume_and_number(self):
+    def test_pages_3(self):
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['volume'])  # Remove the volume
-        del(self.dict_leg['number'])  # Remove the number
+        data = dict(self.sample)
+        del(data['fpage'])
+        del(data['lpage'])
+        result = Legendarium(**data).pages
 
-        leg = Legendarium(**self.dict_leg)
+        self.assertEqual(
+            'e00120416',
+            result
+        )
 
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011:e00120416', leg.stamp)
+    def test_pages_3(self):
 
-    def test_build_legend_without_volume_and_number_and_year_pub_and_suppl_number(self):
+        data = dict(self.sample)
+        del(data['fpage'])
+        del(data['lpage'])
+        del(data['elocation'])
+        result = Legendarium(**data).pages
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['volume'])  # Remove the volume
-        del(self.dict_leg['number'])  # Remove the number
-        del(self.dict_leg['year_pub'])  # Remove the number
+        self.assertEqual(
+            '',
+            result
+        )
 
-        leg = Legendarium(**self.dict_leg)
+    def test_get_numbers_1(self):
 
-        self.assertEqual(u'Rev.Mal-Estar Subj:e00120416', leg.stamp)
+        result = get_numbers('v22')
 
-    def test_build_legend_without_volume_and_number_and_year_pub(self):
+        self.assertEqual('22', result)
 
-        del(self.dict_leg['volume'])  # Remove the volume
-        del(self.dict_leg['number'])  # Remove the number
-        del(self.dict_leg['year_pub'])  # Remove the number
+    def test_get_numbers_2(self):
 
-        leg = Legendarium(**self.dict_leg)
+        result = get_numbers('vol. 22.')
 
-        self.assertEqual(u'Rev.Mal-Estar Subj;(suppl.3):e00120416', leg.stamp)
+        self.assertEqual('22', result)
 
-    def test_build_legend_without_volume_and_number_and_year_pub_and_suppl_number_and_pages(self):
+    def test_get_numbers_3(self):
 
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['volume'])  # Remove the volume
-        del(self.dict_leg['number'])  # Remove the number
-        del(self.dict_leg['year_pub'])  # Remove the publisher year
-        del(self.dict_leg['fpage'])  # Remove the first page
-        del(self.dict_leg['lpage'])  # Remove the last page
-        del(self.dict_leg['article_id'])  # Remove the article identifier
+        result = get_numbers('vol.')
 
-        leg = Legendarium(**self.dict_leg)
+        self.assertEqual('', result)
 
-        self.assertEqual(u'Rev.Mal-Estar Subj', leg.stamp)
+    def test_build_raw_format(self):
+        result = self.legendarium.rawformat
 
-    def test_build_legend_with_wrong_value_in_year(self):
-
-        self.dict_leg['year_pub'] = "20"  # Wrong value in year
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertRaises(ValueError, lambda: leg.stamp)
-
-    def test_build_legend_with_wrong_value_in_year_more_digits(self):
-
-        self.dict_leg['year_pub'] = "2009088"  # Wrong value in year
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertRaises(ValueError, lambda: leg.stamp)
-
-    def test_build_legend_with_wrong_value_volume(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        self.dict_leg['volume'] = "903A"  # Wrong value in volume
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;903(9):e00120416', leg.stamp)
-
-    def test_build_legend_with_wrong_value_fpage(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['article_id'])
-
-        self.dict_leg['fpage'] = "oja9sn10"  # Wrong value in fpage, return wrong
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):oja9sn10-200', leg.stamp)
-
-    def test_build_legend_with_wrong_value_lpage(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['article_id'])
-
-        self.dict_leg['lpage'] = "oja9sn10"  # Wrong value in lpage, return wrong
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):154-oja9sn10', leg.stamp)
-
-    def test_build_legend_with_just_fpage(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['lpage'])  # Remove fpage
-        del(self.dict_leg['article_id'])  # Remove elocation that is preference
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):154', leg.stamp)
-
-    def test_build_legend_with_just_lpage(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['fpage'])  # Remove fpage
-        del(self.dict_leg['article_id'])  # Remove elocation that is preference
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):200', leg.stamp)
-
-    def test_build_legend_without_fpage_lpage_elocation(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['fpage'])  # Remove fpage
-        del(self.dict_leg['lpage'])  # Remove lpage
-        del(self.dict_leg['article_id'])  # Remove article_id
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9)', leg.stamp)
-
-    def test_build_legend_without_volume_number(self):
-
-        del(self.dict_leg['volume'])  # Remove volume
-        del(self.dict_leg['number'])  # Remove number
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;(suppl.3):e00120416', leg.stamp)
-
-    def test_build_legend_with_elocation(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        del(self.dict_leg['fpage'])  # Remove the fpage
-        del(self.dict_leg['lpage'])  # Remove the lpage
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):e00120416', leg.stamp)
-
-    def test_build_acron_title_with_diacritics(self):
-
-        self.dict_leg['acron_title'] = u'Acta Ortopédica Brasileira'
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Acta Ortopédica Brasileira 2011;67(9 suppl.3):e00120416', leg.stamp)
-
-    def test_build_acron_and_check_if_article_id_is_the_preference(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67(9):e00120416', leg.stamp)
-
-    def test_build_acron_when_number_is_None(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-
-        self.dict_leg['number'] = None
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;67:e00120416', leg.stamp)
-
-    def test_build_acron_when_volume_is_None(self):
-
-        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
-        self.dict_leg['volume'] = None
-
-        leg = Legendarium(**self.dict_leg)
-
-        self.assertEqual(u'Rev.Mal-Estar Subj 2011;(9):e00120416', leg.stamp)
-
-if __name__ == "__main__":
-    unittest.main()
+        self.assertEqual(
+            'Revista Mal-Estar Subjetivo, Rev.Mal-Estar Subj, 2011, 67, 9, 3, 154, 200, e00120416',
+            result
+        )

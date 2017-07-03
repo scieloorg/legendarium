@@ -1,138 +1,334 @@
 # coding: utf-8
 
 import re
+from datetime import datetime
+
+from legendarium.utils import translations
+
+NUMBERS = re.compile(r"[^0-9]")
+FORMAT_PREFIX = re.compile(r"%.")
 
 
-class Legendarium(object):
+def get_numbers(value):
+    """
+    Get just numbers in a text.
+    """
+    if not value:
+        return ''
 
-    def __init__(self, acron_title='', year_pub='', volume='', number='',
-                 fpage='', lpage='', article_id='', suppl_number=''):
+    return NUMBERS.sub("", value)
 
-        self.acron_title = acron_title
-        self.year_pub = str(year_pub)
-        self.volume = volume
-        self.number = number
-        self.suppl_number = suppl_number
-        self.fpage = fpage
-        self.lpage = lpage
-        self.article_id = article_id
 
-    def __unicode__(self):
-        return self.stamp
+def parse_date(value):
 
-    def __str__(self):
-        return self.stamp
+    try:
+        dt = datetime.strptime(value, '%Y-%m-%d')
+        return dt.isoformat()[:10]
+    except:
+        try:
+            dt = datetime.strptime(value, '%Y-%m')
+            return dt.isoformat()[:7]
+        except:
+            try:
+                dt = datetime.strptime(value, '%Y')
+                return dt.isoformat()[:4]
+            except:
+                raise ValueError(u'Probably not a valid year')
+
+
+class Legendarium:
+
+    def __init__(self, title, short_title, pubdate, volume='', number='',
+                 fpage='', lpage='', elocation='', suppl=''):
+
+        """
+        Create a instance of Legendarium
+
+        arguments:
+        title -- Full version of the journal title
+        short_title -- short version of the journal title
+        pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+        Keyword arguments:
+        volume -- issue volume
+        number -- issue number
+        suppl -- supplement identification
+        """
+
+        self._title = title.strip()
+        self._short_title = short_title.strip()
+        self._pubdate = parse_date(pubdate)
+        self._volume = volume.strip() or ''
+        self._number = number.strip() or ''
+        self._suppl = suppl.strip() or ''
+        self._fpage = fpage.strip() or ''
+        self._lpage = lpage.strip() or ''
+        self._elocation = elocation.strip() or ''
 
     def __repr__(self):
-        return self.stamp
-
-    def _get_numbers(self, text):
-        """
-        Get just numbers in a text.
-        """
-        if text:
-            return re.sub("[^0-9]", "", text)
-        else:
-            return ''
-
-    def _clean_year_pub(self):
-        """
-        Clean the year removing all caracter and keep just 4/1 numbers.
-        """
-        if self.year_pub:
-            year = self._get_numbers(self.year_pub)
-            if len(year) == 4:
-                return ' {0}'.format(year[:4])
-            else:
-                raise ValueError(u'Probably not a valid year')
-        else:
-            return u''
-
-    def _clean_volume(self):
-        """
-        Clean the volume removing all caracter and keep just numbers.
-        """
-        return self._get_numbers(self.volume)
-
-    def _clean_number(self):
-        """
-        Clean the number stripped the beginning and the end of the string.
-        """
-        if self.number:
-            return self.number.strip()
-        else:
-            return ''
-
-    def _clean_acron_title(self):
-        """
-        Clean the title stripped the beginning and the end of the string.
-        """
-        return self.acron_title.strip()
-
-    def _clean_suppl_number(self):
-        """
-        Clean the suppl_number stripped the beginning and the end of the string.
-        """
-        if self.suppl_number:
-            return self.suppl_number.strip()
-        else:
-            return ''
-
-    def get_journal(self):
-        """
-        Method to build the journal, it can have ``year_pub`` or not.
-        """
-        if self.acron_title:
-            title = self._clean_acron_title()
-        else:
-            raise ValueError(u'The journal is mandatory to mount the bibliographic legend')
-
-        year_pub = self._clean_year_pub()
-
-        return u'{0}{1}'.format(title, year_pub)
-
-    def get_issue(self):
-        """
-        Method to build the issue.
-        """
-        volume = self._clean_volume()
-        number = self._clean_number()
-        suppl = self._clean_suppl_number()
-
-        if number or suppl:
-            number = u'({0}{1})'.format(number, '{0}suppl.{1}'.format(' ' if number else '', suppl) if suppl else '')
-
-        if volume or number:
-            return u'{0}{1}{2}'.format(';', volume, number)
-        else:
-            return u''
-
-    def get_article(self):
-        """
-        Method to build the article.
-        """
-        article = u''
-
-        if self.article_id:
-            article = self.article_id
-        elif self.fpage and self.lpage:
-            article = u'{0}-{1}'.format(self.fpage, self.lpage)
-        elif self.fpage:
-            article = self.fpage
-        elif self.lpage:
-            article = self.lpage
-        else:
-            return article
-
-        return u'{0}{1}'.format(':', article)
+        return "%s.%s(%s, %s, %s, %s, %s, %s, %s, %s, %s)" % (
+            self.__class__.__module__,
+            self.__class__.__qualname__,
+            self._title,
+            self._short_title,
+            self._pubdate,
+            self._volume,
+            self._number,
+            self._suppl,
+            self._fpage,
+            self._lpage,
+            self._elocation
+        )
 
     @property
-    def stamp(self):
-        """
-        Print the legend follow the basic definition:
+    def title(self):
 
-            REVISTA ANO;VOLUME(NUMBER):ID_ARTICLE
-        """
-        args = [self.get_journal(), self.get_issue(), self.get_article()]
+        return self._title
 
-        return u'{0}{1}{2}'.format(*args)
+    @property
+    def short_title(self):
+
+        return self._short_title
+
+    @property
+    def yearpubdata(self):
+
+        return self._pubdate[0:4]
+
+    @property
+    def pubdate(self):
+
+        return self._pubdate
+
+    @property
+    def volume(self):
+
+        return self._volume
+
+    @property
+    def number(self):
+
+        return self._number
+
+    @property
+    def suppl(self):
+
+        return self._suppl
+
+    def issue(self):
+        """
+        This function returns a string with a short version of the issue identification
+
+        Example 1:
+            self.volume: 10
+            self.number: 12
+            return 10(12)
+
+        Example 2:
+            self.volume: 10
+            return 10
+
+        Example 3:
+            self.number: 12
+            return (12)
+
+        Example 4:
+            self.volume: 10
+            self.number: 12
+            self.suppl: 1
+            return 10(12) suppl. 1
+
+        """
+
+    @property
+    def fpage(self):
+
+        return self._fpage
+
+    @property
+    def lpage(self):
+
+        return self._lpage
+
+    @property
+    def pages(self):
+
+        pages = [i for i in sorted([self.fpage, self.lpage]) if i]
+
+        if pages:
+            return "-".join(pages)
+
+        if self.elocation:
+            return self.elocation
+
+        return ''
+
+    @property
+    def elocation(self):
+
+        return self._elocation
+
+    @property
+    def rawformat(self):
+
+        data = (
+            self._title,
+            self._short_title,
+            self._pubdate,
+            self._volume,
+            self._number,
+            self._suppl,
+            self._fpage,
+            self._lpage,
+            self._elocation
+        )
+
+        return ', '.join([i for i in data if i])
+
+    def format(self, fmt_spec=''):
+
+        return self.__format__(fmt_spec)
+
+    def __format__(self, fmt_spec=''):
+
+        FORMAT_PATTERNS = {
+            '%T': self.title,
+            '%t': self.short_title,
+            '%Y': self.yearpubdata,
+            '%v': self.volume,
+            '%n': self.number,
+            '%s': self.suppl,
+            '%f': self.fpage,
+            '%l': self.lpage,
+            '%p': self.pages,
+            '%e': self.elocation,
+            '%d': self.pubdate
+        }
+
+        itens = FORMAT_PREFIX.findall(fmt_spec)
+
+        for item in itens:
+            if item in FORMAT_PATTERNS:
+                fmt_spec = fmt_spec.replace(item, FORMAT_PATTERNS[item])
+            else:
+                raise ValueError('Pattern %s not found in %s' % [item, str([i for i in FORMAT_PATTERNS])])
+
+        return fmt_spec
+
+
+def short_format(title, short_title, pubdate, volume='', number='', suppl=''):
+    """
+    Return a short version of a bibliografic legend, according to the given
+    parameters.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
+    """
+
+    template = ['%t, %Y %v(%n)']
+
+    if suppl:
+        template.append('suppl. %s')
+
+    output = Legendarium(title, short_title, pubdate, volume=volume, number=number, fpage='', lpage='', elocation='', suppl=suppl)
+
+    return output.format(' '.join(template))
+
+
+def descriptive_format(title, short_title, pubdate, volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+    """
+    Return a short version of a bibliografic legend, according to the given
+    parameters.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
+    """
+
+    template = ['%T, %Y']
+
+    if volume:
+        template.append(translations['volume'][language]+': %v')
+
+    if number:
+        template.append(translations['number'][language]+': %n')
+
+    if suppl:
+        template.append(translations['supplement'][language]+': %s')
+
+    if fpage or lpage:
+        template.append(translations['pages'][language]+': %p')
+
+    if elocation:
+        template.pop()
+        template.append(translations['article number'][language]+': %e')
+
+    output = Legendarium(
+        title, short_title, pubdate, volume, number, fpage, lpage, elocation, suppl
+    )
+
+    return output.format(', '.join(template))
+
+
+def descriptive_html_format(title, short_title, pubdate, volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+    """
+    Return a short version of a bibliografic legend, according to the given
+    parameters.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
+    """
+    template = []
+    template.append('<div class="biblio_label">')
+    template.append('<span class="title">%T</span>')
+    template.append('<span class="year">%Y</span>')
+
+    if volume:
+        template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
+
+    if number:
+        template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
+
+    if suppl:
+        template.append('<span class="prefix supplement">'+translations['supplement'][language]+':</span> <span class="value supplement">%s</span>')
+
+    if fpage or lpage:
+        template.append('<span class="prefix pages">'+translations['pages'][language]+':</span> <span class="value pages">%p</span>')
+
+    if elocation:
+        template.pop()
+        template.append('<span class="prefix pages">'+translations['article number'][language]+':</span> <span class="value pages">%e</span>')
+
+    template.append('</div>')
+
+    output = Legendarium(
+        title, short_title, pubdate, volume, number, fpage, lpage, elocation, suppl
+    )
+
+    return output.format(''.join(template))

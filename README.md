@@ -14,7 +14,7 @@ See Build: https://travis-ci.org/scieloorg/legendarium
 
 
 Develop API Usage
----------
+-----------------
 
 <pre>
 <code>
@@ -28,6 +28,6 @@ Develop API Usage
 
 
 For develop version
-====================
+===================
 
 `pip install -e git+git@github.com:scieloorg/legendarium#egg=legendarium`
