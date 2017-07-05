@@ -6,8 +6,10 @@ from legendarium.formatter import (
     short_format,
     very_short_format,
     descriptive_format,
+    descriptive_short_format,
     descriptive_very_short_format,
     descriptive_html_format,
+    descriptive_html_short_format,
     descriptive_html_very_short_format,
     get_numbers
 )
@@ -190,12 +192,38 @@ class TestLegendarium(unittest.TestCase):
             result
         )
 
+    def test_descriptive_short_format(self):
+
+        del(self.sample['elocation'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+
+        result = descriptive_short_format(**self.sample)
+
+        self.assertEqual(
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3',
+            result
+        )
+
     def test_descriptive_html_format(self):
 
         result = descriptive_html_format(**self.sample)
 
         self.assertEqual(
             '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span><span class="prefix pages">Article number:</span> <span class="value pages">e00120416</span></div>',
+            result
+        )
+
+    def test_descriptive_html_short_format(self):
+
+        del(self.sample['elocation'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+
+        result = descriptive_html_short_format(**self.sample)
+
+        self.assertEqual(
+            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span></div>',
             result
         )
 
