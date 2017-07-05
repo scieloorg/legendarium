@@ -7,6 +7,7 @@ from legendarium.utils import translations
 
 NUMBERS = re.compile(r"[^0-9]")
 FORMAT_PREFIX = re.compile(r"%.")
+SPACES = re.compile(r" +")
 
 
 def get_numbers(value):
@@ -113,6 +114,9 @@ class CitationFormatter:
     @property
     def suppl(self):
 
+        if self._suppl == '0':
+            return ''
+
         return self._suppl
 
     def issue(self):
@@ -213,7 +217,7 @@ class CitationFormatter:
             else:
                 raise ValueError('Pattern %s not found in %s' % [item, str([i for i in FORMAT_PATTERNS])])
 
-        return fmt_spec
+        return fmt_spec.strip()
 
 
 def very_short_format(*, pubdate='', volume='', number='', suppl='', language='en'):
@@ -278,10 +282,19 @@ def short_format(*, title, short_title, pubdate, volume='', number='', suppl='')
     return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
     """
 
-    template = ['%t, %Y %v(%n)']
+    template = ['%t, %Y']
+
+    vn = ''
+    if volume:
+        vn += '%v'
+
+    if number:
+        vn += '(%n)'
+
+    template.append(vn)
 
     if suppl:
-        template.append('suppl. %s')
+        template.append('suppl %s')
 
     output = CitationFormatter(
         title=title,
@@ -324,7 +337,10 @@ def descriptive_format(*, title, short_title, pubdate, volume, number, fpage, lp
         template.append(translations['number'][language]+': %n')
 
     if suppl:
-        template.append(translations['supplement'][language]+': %s')
+        if suppl == '0':
+            template[-1] += ' '+translations['supplement'][language]
+        else:
+            template[-1] += ' '+translations['supplement'][language]+' %s'
 
     if fpage or lpage:
         template.append(translations['pages'][language]+': %p')
@@ -390,7 +406,7 @@ def descriptive_html_format(*, title, short_title, pubdate, volume='', number=''
         template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
-        template.append('<span class="prefix supplement">'+translations['supplement'][language]+':</span> <span class="value supplement">%s</span>')
+        template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
 
     if fpage or lpage:
         template.append('<span class="prefix pages">'+translations['pages'][language]+':</span> <span class="value pages">%p</span>')
@@ -442,7 +458,10 @@ def descriptive_short_format(*, title, short_title, pubdate, volume='', number='
         template.append(translations['number'][language]+': %n')
 
     if suppl:
-        template.append(translations['supplement'][language]+': %s')
+        if suppl == '0':
+            template[-1] += ' '+translations['supplement'][language]
+        else:
+            template[-1] += ' '+translations['supplement'][language]+' %s'
 
     output = CitationFormatter(
         title=title,
@@ -496,7 +515,7 @@ def descriptive_html_short_format(*, title, short_title, pubdate, volume='', num
         template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
-        template.append('<span class="prefix supplement">'+translations['supplement'][language]+':</span> <span class="value supplement">%s</span>')
+        template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
 
     template.append('</div>')
 
@@ -541,7 +560,10 @@ def descriptive_very_short_format(*, pubdate, volume='', number='', suppl='', la
         template.append(translations['number'][language]+': %n')
 
     if suppl:
-        template.append(translations['supplement'][language]+': %s')
+        if suppl == '0':
+            template[-1] += ' '+translations['supplement'][language]
+        else:
+            template[-1] += ' '+translations['supplement'][language]+' %s'
 
     output = CitationFormatter(
         title='',
@@ -593,7 +615,7 @@ def descriptive_html_very_short_format(*, pubdate, volume='', number='', suppl='
         template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
-        template.append('<span class="prefix supplement">'+translations['supplement'][language]+':</span> <span class="value supplement">%s</span>')
+        template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
 
     template.append('</div>')
 

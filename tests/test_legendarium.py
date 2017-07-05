@@ -168,8 +168,84 @@ class TestLegendarium(unittest.TestCase):
         result = short_format(**data)
 
         self.assertEqual(
-            'Rev.Mal-Estar Subj, 2011 67(9) suppl. 3',
+            'Rev.Mal-Estar Subj, 2011 67(9) suppl 3',
             result
+        )
+
+    def test_short_format_suppl_volume(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '',
+            'suppl': '1'
+        }
+
+        result = short_format(**data)
+
+        self.assertEqual(
+            'Rev. Odontol. Univ. São Paulo, 1997 11 suppl 1',
+            result
+
+        )
+
+    def test_short_format_suppl_number(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '21',
+            'suppl': '1'
+        }
+
+        result = short_format(**data)
+
+        self.assertEqual(
+            'Rev. Odontol. Univ. São Paulo, 1997 11(21) suppl 1',
+            result
+
+        )
+
+    def test_short_format_suppl_number_1(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '21',
+            'suppl': '0'
+        }
+
+        result = short_format(**data)
+
+        self.assertEqual(
+            'Rev. Odontol. Univ. São Paulo, 1997 11(21) suppl',
+            result
+
+        )
+
+    def test_short_format_suppl_volume_1(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '',
+            'suppl': '0'
+        }
+
+        result = short_format(**data)
+
+        self.assertEqual(
+            'Rev. Odontol. Univ. São Paulo, 1997 11 suppl',
+            result
+
         )
 
     def test_descriptive_format(self):
@@ -177,7 +253,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_format(**self.sample)
 
         self.assertEqual(
-            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3, Article number: e00120416',
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9 Supplement 3, Article number: e00120416',
             result
         )
 
@@ -188,8 +264,96 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_format(**self.sample)
 
         self.assertEqual(
-            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3, Pages: 154-200',
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9 Supplement 3, Pages: 154-200',
             result
+        )
+
+    def test_descriptive_format_suppl_number(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '21',
+            'suppl': '1',
+            'fpage': '121',
+            'lpage': '143',
+            'elocation': ''
+        }
+
+        result = descriptive_format(**data)
+
+        self.assertEqual(
+            'Revista de Odontologia da Universidade de São Paulo, 1997, Volume: 11, Number: 21 Supplement 1, Pages: 121-143',
+            result
+
+        )
+
+    def test_descriptive_format_suppl_number_1(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '21',
+            'suppl': '0',
+            'fpage': '121',
+            'lpage': '143',
+            'elocation': ''
+        }
+
+        result = descriptive_format(**data)
+
+        self.assertEqual(
+            'Revista de Odontologia da Universidade de São Paulo, 1997, Volume: 11, Number: 21 Supplement, Pages: 121-143',
+            result
+
+        )
+
+    def test_descriptive_format_suppl_volume(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '',
+            'suppl': '1',
+            'fpage': '121',
+            'lpage': '143',
+            'elocation': ''
+        }
+
+        result = descriptive_format(**data)
+
+        self.assertEqual(
+            'Revista de Odontologia da Universidade de São Paulo, 1997, Volume: 11 Supplement 1, Pages: 121-143',
+            result
+
+        )
+
+    def test_descriptive_format_suppl_volume_1(self):
+
+        data = {
+            'title': 'Revista de Odontologia da Universidade de São Paulo',
+            'short_title': 'Rev. Odontol. Univ. São Paulo',
+            'pubdate': '1997',
+            'volume': '11',
+            'number': '',
+            'suppl': '0',
+            'fpage': '121',
+            'lpage': '143',
+            'elocation': ''
+        }
+
+        result = descriptive_format(**data)
+
+        self.assertEqual(
+            'Revista de Odontologia da Universidade de São Paulo, 1997, Volume: 11 Supplement, Pages: 121-143',
+            result
+
         )
 
     def test_descriptive_short_format(self):
@@ -201,7 +365,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_short_format(**self.sample)
 
         self.assertEqual(
-            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3',
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9 Supplement 3',
             result
         )
 
@@ -210,7 +374,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_html_format(**self.sample)
 
         self.assertEqual(
-            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span><span class="prefix pages">Article number:</span> <span class="value pages">e00120416</span></div>',
+            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement</span> <span class="value supplement">3</span><span class="prefix pages">Article number:</span> <span class="value pages">e00120416</span></div>',
             result
         )
 
@@ -223,7 +387,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_html_short_format(**self.sample)
 
         self.assertEqual(
-            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span></div>',
+            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement</span> <span class="value supplement">3</span></div>',
             result
         )
 
@@ -238,7 +402,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_very_short_format(**self.sample)
 
         self.assertEqual(
-            '2011, Volume: 67, Number: 9, Supplement: 3',
+            '2011, Volume: 67, Number: 9 Supplement 3',
             result
         )
 
@@ -253,7 +417,7 @@ class TestLegendarium(unittest.TestCase):
         result = descriptive_html_very_short_format(**self.sample)
 
         self.assertEqual(
-            '<div class="biblio_label"><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span></div>',
+            '<div class="biblio_label"><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement</span> <span class="value supplement">3</span></div>',
             result
         )
 
