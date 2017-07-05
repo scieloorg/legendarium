@@ -221,12 +221,10 @@ def very_short_format(*, pubdate='', volume='', number='', suppl='', language='e
     Return a very short version of a bibliografic legend, according to the given
     parameters. Normaly used to identify the Issue Label.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
@@ -269,12 +267,10 @@ def short_format(*, title, short_title, pubdate, volume='', number='', suppl='')
     Return a short version of a bibliografic legend, according to the given
     parameters.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
@@ -307,12 +303,10 @@ def descriptive_format(*, title, short_title, pubdate, volume, number, fpage, lp
     Return a short version of a bibliografic legend, according to the given
     parameters.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
@@ -359,15 +353,16 @@ def descriptive_html_format(*, title, short_title, pubdate, volume='', number=''
     Return a short version of a bibliografic legend, according to the given
     parameters.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
+    fpage -- document first page
+    lpage -- document last page
+    elocation -- document elocation id
 
     return:
     <div class="biblio_label">
@@ -426,12 +421,10 @@ def descriptive_very_short_format(*, pubdate, volume='', number='', suppl='', la
     Return a short version of a bibliografic legend, according to the given
     parameters.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
@@ -471,12 +464,10 @@ def descriptive_html_very_short_format(*, pubdate, volume='', number='', suppl='
     Return a short version of a bibliografic legend, according to the given
     parameters.
 
-    arguments:
+    Keyword arguments:
     title -- Full version of the journal title
     short_title -- short version of the journal title
     pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
-
-    Keyword arguments:
     volume -- issue volume
     number -- issue number
     suppl -- supplement identification
@@ -491,8 +482,6 @@ def descriptive_html_very_short_format(*, pubdate, volume='', number='', suppl='
       <span class="value number">9</span
       <span class="prefix supplement">supplement:</span>
       <span class="value supplement">3</span
-      <span class="prefix pages">article number:</span>
-      <span class="value pages">e00120416</span>
     </div>
     """
     template = []
