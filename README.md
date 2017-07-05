@@ -3,7 +3,7 @@ Legendarium
 
 * Python library to handle SciELO`s bibliographic legend
 * License: BSD
-* Compatible With: python 2.7 and 3.5
+* Compatible With: python 3.3+
 
 [![Build Status](https://travis-ci.org/scieloorg/legendarium.svg)](https://travis-ci.org/scieloorg/legendarium)
 [![Code Health](https://landscape.io/github/scieloorg/legendarium/master/landscape.svg?style=flat)](https://landscape.io/github/scieloorg/legendarium/master)
