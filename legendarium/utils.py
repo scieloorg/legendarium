@@ -2,28 +2,33 @@
 
 translations = {
     "volume": {
-        "pt": "volume",
-        "es": "volume",
-        "en": "volume"
+        "pt": "Volume",
+        "es": "Volumen",
+        "en": "Volume"
     },
     "number": {
-        "pt": u"número",
-        "es": "numero",
-        "en": "numero"
+        "pt": u"Número",
+        "es": "Numero",
+        "en": "Number"
     },
     "pages": {
-        "pt": u"páginas",
-        "es": "paginas",
-        "en": "pages"
+        "pt": u"Páginas",
+        "es": "Paginas",
+        "en": "Pages"
     },
     "supplement": {
-        "pt": "suplemento",
-        "es": "suplemento",
-        "en": "supplement"
+        "pt": "Suplemento",
+        "es": "Suplemento",
+        "en": "Supplement"
+    },
+    "suppl": {
+        "pt": "supl",
+        "es": "supl",
+        "en": "suppl"
     },
     "article number": {
-        "pt": "número do artigo",
-        "es": "numero del articulo",
-        "en": "article number"
+        "pt": "Número do artigo",
+        "es": "Numero del articulo",
+        "en": "Article number"
     },
 }

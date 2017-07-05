@@ -1,10 +1,14 @@
 # coding: utf-8
 import unittest
 
-from legendarium.legendarium import (
-    Legendarium,
+from legendarium.formatter import (
+    CitationFormatter,
     short_format,
+    very_short_format,
     descriptive_format,
+    descriptive_very_short_format,
+    descriptive_html_format,
+    descriptive_html_very_short_format,
     get_numbers
 )
 
@@ -24,7 +28,7 @@ class TestLegendarium(unittest.TestCase):
             'suppl': u'3'
         }
 
-        self.legendarium = Legendarium(**self.sample)
+        self.legendarium = CitationFormatter(**self.sample)
 
     def test_format(self):
 
@@ -32,6 +36,124 @@ class TestLegendarium(unittest.TestCase):
 
         self.assertEqual(
             'Revista Mal-Estar Subjetivo, 2011, 67(9), 154-200',
+            result
+        )
+
+    def test_very_short_format(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, 67(9) suppl. 3',
+            result
+        )
+
+    def test_very_short_format_1(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['suppl'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, 67(9)',
+            result
+        )
+
+    def test_very_short_format_2(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['suppl'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, 67(9)',
+            result
+        )
+
+    def test_very_short_format_3(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['suppl'] = ''
+        self.sample['number'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, 67',
+            result
+        )
+
+    def test_very_short_format_4(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['number'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, 67 suppl. 3',
+            result
+        )
+
+    def test_very_short_format_5(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['volume'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, (9) suppl. 3',
+            result
+        )
+
+    def test_very_short_format_6(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        self.sample['suppl'] = ''
+        self.sample['volume'] = ''
+
+        result = very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, (9)',
             result
         )
 
@@ -50,11 +172,60 @@ class TestLegendarium(unittest.TestCase):
 
     def test_descriptive_format(self):
 
-        data = dict(self.sample)
-        result = descriptive_format(**data)
+        result = descriptive_format(**self.sample)
 
         self.assertEqual(
-            'Revista Mal-Estar Subjetivo, 2011 volume: 67 number: 9 supplement: 3 position: 154-200',
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3, Article number: e00120416',
+            result
+        )
+
+    def test_descriptive_format_1(self):
+
+        self.sample['elocation'] = ''
+
+        result = descriptive_format(**self.sample)
+
+        self.assertEqual(
+            'Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3, Pages: 154-200',
+            result
+        )
+
+    def test_descriptive_html_format(self):
+
+        result = descriptive_html_format(**self.sample)
+
+        self.assertEqual(
+            '<div class="biblio_label"><span class="title">Revista Mal-Estar Subjetivo</span><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span><span class="prefix pages">Article number:</span> <span class="value pages">e00120416</span></div>',
+            result
+        )
+
+    def test_descriptive_very_short_format(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['lpage'])
+        del(self.sample['fpage'])
+        del(self.sample['elocation'])
+
+        result = descriptive_very_short_format(**self.sample)
+
+        self.assertEqual(
+            '2011, Volume: 67, Number: 9, Supplement: 3',
+            result
+        )
+
+    def test_descriptive_html_very_short_format(self):
+
+        del(self.sample['title'])
+        del(self.sample['short_title'])
+        del(self.sample['lpage'])
+        del(self.sample['fpage'])
+        del(self.sample['elocation'])
+
+        result = descriptive_html_very_short_format(**self.sample)
+
+        self.assertEqual(
+            '<div class="biblio_label"><span class="year">2011</span><span class="prefix volume">Volume:</span> <span class="value volume">67</span><span class="prefix number">Number:</span> <span class="value number">9</span><span class="prefix supplement">Supplement:</span> <span class="value supplement">3</span></div>',
             result
         )
 
@@ -68,9 +239,9 @@ class TestLegendarium(unittest.TestCase):
 
     def test_pages_1(self):
 
-        data = dict(self.sample)
-        del(data['fpage'])
-        result = Legendarium(**data).pages
+        del(self.sample['fpage'])
+
+        result = CitationFormatter(**self.sample).pages
 
         self.assertEqual(
             '200',
@@ -79,9 +250,9 @@ class TestLegendarium(unittest.TestCase):
 
     def test_pages_2(self):
 
-        data = dict(self.sample)
-        del(data['lpage'])
-        result = Legendarium(**data).pages
+        del(self.sample['lpage'])
+
+        result = CitationFormatter(**self.sample).pages
 
         self.assertEqual(
             '154',
@@ -90,10 +261,10 @@ class TestLegendarium(unittest.TestCase):
 
     def test_pages_3(self):
 
-        data = dict(self.sample)
-        del(data['fpage'])
-        del(data['lpage'])
-        result = Legendarium(**data).pages
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+
+        result = CitationFormatter(**self.sample).pages
 
         self.assertEqual(
             'e00120416',
@@ -102,11 +273,11 @@ class TestLegendarium(unittest.TestCase):
 
     def test_pages_3(self):
 
-        data = dict(self.sample)
-        del(data['fpage'])
-        del(data['lpage'])
-        del(data['elocation'])
-        result = Legendarium(**data).pages
+        del(self.sample['fpage'])
+        del(self.sample['lpage'])
+        del(self.sample['elocation'])
+
+        result = CitationFormatter(**self.sample).pages
 
         self.assertEqual(
             '',

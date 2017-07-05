@@ -36,9 +36,9 @@ def parse_date(value):
                 raise ValueError(u'Probably not a valid year')
 
 
-class Legendarium:
+class CitationFormatter:
 
-    def __init__(self, title, short_title, pubdate, volume='', number='',
+    def __init__(self, *, title='', short_title='', pubdate='', volume='', number='',
                  fpage='', lpage='', elocation='', suppl=''):
 
         """
@@ -216,7 +216,55 @@ class Legendarium:
         return fmt_spec
 
 
-def short_format(title, short_title, pubdate, volume='', number='', suppl=''):
+def very_short_format(*, pubdate='', volume='', number='', suppl='', language='en'):
+    """
+    Return a very short version of a bibliografic legend, according to the given
+    parameters. Normaly used to identify the Issue Label.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return: (string)
+    67(9) suppl. 3 - 2011
+    """
+
+    template = ['%Y,']
+
+    vn = ''
+    if volume:
+        vn += '%v'
+
+    if number:
+        vn += '(%n)'
+
+    template.append(vn)
+
+    if suppl:
+        template.append(translations['suppl'][language]+'. %s')
+
+    output = CitationFormatter(
+        title='',
+        short_title='',
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage='',
+        lpage='',
+        elocation='',
+        suppl=suppl
+    )
+
+    return output.format(' '.join(template))
+
+
+def short_format(*, title, short_title, pubdate, volume='', number='', suppl=''):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -239,12 +287,22 @@ def short_format(title, short_title, pubdate, volume='', number='', suppl=''):
     if suppl:
         template.append('suppl. %s')
 
-    output = Legendarium(title, short_title, pubdate, volume=volume, number=number, fpage='', lpage='', elocation='', suppl=suppl)
+    output = CitationFormatter(
+        title=title,
+        short_title=short_title,
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage='',
+        lpage='',
+        elocation='',
+        suppl=suppl
+    )
 
     return output.format(' '.join(template))
 
 
-def descriptive_format(title, short_title, pubdate, volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+def descriptive_format(*, title, short_title, pubdate, volume, number, fpage, lpage, elocation, suppl, language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -259,7 +317,8 @@ def descriptive_format(title, short_title, pubdate, volume='', number='', fpage=
     number -- issue number
     suppl -- supplement identification
 
-    return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
+    return: (string)
+    Revista Mal-Estar Subjetivo, 2011, volume: 67, number: 9, supplement: 3, pages: 154-200
     """
 
     template = ['%T, %Y']
@@ -280,14 +339,22 @@ def descriptive_format(title, short_title, pubdate, volume='', number='', fpage=
         template.pop()
         template.append(translations['article number'][language]+': %e')
 
-    output = Legendarium(
-        title, short_title, pubdate, volume, number, fpage, lpage, elocation, suppl
+    output = CitationFormatter(
+        title=title,
+        short_title=short_title,
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage=fpage,
+        lpage=lpage,
+        elocation=elocation,
+        suppl=suppl
     )
 
     return output.format(', '.join(template))
 
 
-def descriptive_html_format(title, short_title, pubdate, volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+def descriptive_html_format(*, title, short_title, pubdate, volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -302,7 +369,19 @@ def descriptive_html_format(title, short_title, pubdate, volume='', number='', f
     number -- issue number
     suppl -- supplement identification
 
-    return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
+    return:
+    <div class="biblio_label">
+      <span class="title">Revista Mal-Estar Subjetivo</span>
+      <span class="year">2011</span>
+      <span class="prefix volume">volume:</span>
+      <span class="value volume">67</span>
+      <span class="prefix number">number:</span>
+      <span class="value number">9</span
+      <span class="prefix supplement">supplement:</span>
+      <span class="value supplement">3</span
+      <span class="prefix pages">article number:</span>
+      <span class="value pages">e00120416</span>
+    </div>
     """
     template = []
     template.append('<div class="biblio_label">')
@@ -327,8 +406,119 @@ def descriptive_html_format(title, short_title, pubdate, volume='', number='', f
 
     template.append('</div>')
 
-    output = Legendarium(
-        title, short_title, pubdate, volume, number, fpage, lpage, elocation, suppl
+    output = CitationFormatter(
+        title=title,
+        short_title=short_title,
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage=fpage,
+        lpage=lpage,
+        elocation=elocation,
+        suppl=suppl
+    )
+
+    return output.format(''.join(template))
+
+
+def descriptive_very_short_format(*, pubdate, volume='', number='', suppl='', language='en'):
+    """
+    Return a short version of a bibliografic legend, according to the given
+    parameters.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return: (string)
+    2011, Volume: 67, Number: 9, Supplement: 3
+    """
+
+    template = ['%Y']
+
+    if volume:
+        template.append(translations['volume'][language]+': %v')
+
+    if number:
+        template.append(translations['number'][language]+': %n')
+
+    if suppl:
+        template.append(translations['supplement'][language]+': %s')
+
+    output = CitationFormatter(
+        title='',
+        short_title='',
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage='',
+        lpage='',
+        elocation='',
+        suppl=suppl
+    )
+
+    return output.format(', '.join(template))
+
+
+def descriptive_html_very_short_format(*, pubdate, volume='', number='', suppl='', language='en'):
+    """
+    Return a short version of a bibliografic legend, according to the given
+    parameters.
+
+    arguments:
+    title -- Full version of the journal title
+    short_title -- short version of the journal title
+    pubdata -- a valid ISO date YYYY-MM-DD (no hour, minutes and seconds accepted)
+
+    Keyword arguments:
+    volume -- issue volume
+    number -- issue number
+    suppl -- supplement identification
+
+    return:
+    <div class="biblio_label">
+      <span class="title">Revista Mal-Estar Subjetivo</span>
+      <span class="year">2011</span>
+      <span class="prefix volume">volume:</span>
+      <span class="value volume">67</span>
+      <span class="prefix number">number:</span>
+      <span class="value number">9</span
+      <span class="prefix supplement">supplement:</span>
+      <span class="value supplement">3</span
+      <span class="prefix pages">article number:</span>
+      <span class="value pages">e00120416</span>
+    </div>
+    """
+    template = []
+    template.append('<div class="biblio_label">')
+    template.append('<span class="year">%Y</span>')
+    if volume:
+        template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
+
+    if number:
+        template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
+
+    if suppl:
+        template.append('<span class="prefix supplement">'+translations['supplement'][language]+':</span> <span class="value supplement">%s</span>')
+
+    template.append('</div>')
+
+    output = CitationFormatter(
+        title='',
+        short_title='',
+        pubdate=pubdate,
+        volume=volume,
+        number=number,
+        fpage='',
+        lpage='',
+        elocation='',
+        suppl=suppl
     )
 
     return output.format(''.join(template))
