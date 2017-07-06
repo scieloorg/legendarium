@@ -39,7 +39,7 @@ def parse_date(value):
 
 class CitationFormatter:
 
-    def __init__(self, *ignore_args, title='', short_title='', pubdate='', volume='', number='',
+    def __init__(self, title='', short_title='', pubdate='', volume='', number='',
                  fpage='', lpage='', elocation='', suppl=''):
 
         """
@@ -55,9 +55,6 @@ class CitationFormatter:
         number -- issue number
         suppl -- supplement identification
         """
-
-        if ignore_args:  # If ignore is not empty
-            raise TypeError('Arguments not allowed')
 
         self._title = title.strip() if title else ''
         self._short_title = short_title.strip() if short_title else ''
@@ -223,7 +220,7 @@ class CitationFormatter:
         return fmt_spec.strip()
 
 
-def very_short_format(*ignore_args, pubdate='', volume='', number='', suppl='', language='en'):
+def very_short_format(pubdate='', volume='', number='', suppl='', language='en'):
     """
     Return a very short version of a bibliografic legend, according to the given
     parameters. Normaly used to identify the Issue Label.
@@ -239,9 +236,6 @@ def very_short_format(*ignore_args, pubdate='', volume='', number='', suppl='', 
     return: (string)
     67(9) suppl. 3 - 2011
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = ['%Y,']
 
@@ -272,7 +266,7 @@ def very_short_format(*ignore_args, pubdate='', volume='', number='', suppl='', 
     return output.format(' '.join(template))
 
 
-def short_format(*ignore_args, title='', short_title='', pubdate='', volume='', number='', suppl=''):
+def short_format(title='', short_title='', pubdate='', volume='', number='', suppl=''):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -287,9 +281,6 @@ def short_format(*ignore_args, title='', short_title='', pubdate='', volume='', 
 
     return (string) Rev.Mal-Estar Subj, 2011 67(9) suppl. 3
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = ['%t, %Y']
 
@@ -320,7 +311,7 @@ def short_format(*ignore_args, title='', short_title='', pubdate='', volume='', 
     return output.format(' '.join(template))
 
 
-def descriptive_format(*ignore_args, title='', short_title='', pubdate='', volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+def descriptive_format(title='', short_title='', pubdate='', volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -336,9 +327,6 @@ def descriptive_format(*ignore_args, title='', short_title='', pubdate='', volum
     return: (string)
     Revista Mal-Estar Subjetivo, 2011, volume: 67, number: 9, supplement: 3, pages: 154-200
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = ['%T, %Y']
 
@@ -377,7 +365,7 @@ def descriptive_format(*ignore_args, title='', short_title='', pubdate='', volum
     return output.format(', '.join(template))
 
 
-def descriptive_html_format(*ignore_args, title='', short_title='', pubdate='', volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
+def descriptive_html_format(title='', short_title='', pubdate='', volume='', number='', fpage='', lpage='', elocation='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -407,9 +395,6 @@ def descriptive_html_format(*ignore_args, title='', short_title='', pubdate='', 
       <span class="value pages">e00120416</span>
     </div>
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = []
     template.append('<div class="biblio_label">')
@@ -450,7 +435,7 @@ def descriptive_html_format(*ignore_args, title='', short_title='', pubdate='', 
     return output.format(''.join(template))
 
 
-def descriptive_short_format(*ignore_args, title='', short_title='', pubdate='', volume='', number='', suppl='', language='en'):
+def descriptive_short_format(title='', short_title='', pubdate='', volume='', number='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -466,9 +451,6 @@ def descriptive_short_format(*ignore_args, title='', short_title='', pubdate='',
     return: (string)
     Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = ['%T, %Y']
 
@@ -499,7 +481,7 @@ def descriptive_short_format(*ignore_args, title='', short_title='', pubdate='',
     return output.format(', '.join(template))
 
 
-def descriptive_html_short_format(*ignore_args, title='', short_title='', pubdate='', volume='', number='', suppl='', language='en'):
+def descriptive_html_short_format(title='', short_title='', pubdate='', volume='', number='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -524,9 +506,6 @@ def descriptive_html_short_format(*ignore_args, title='', short_title='', pubdat
       <span class="value supplement">3</span
     </div>
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = []
     template.append('<div class="biblio_label">')
@@ -559,7 +538,7 @@ def descriptive_html_short_format(*ignore_args, title='', short_title='', pubdat
     return output.format(''.join(template))
 
 
-def descriptive_very_short_format(*ignore_args, pubdate='', volume='', number='', suppl='', language='en'):
+def descriptive_very_short_format(pubdate='', volume='', number='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -575,9 +554,6 @@ def descriptive_very_short_format(*ignore_args, pubdate='', volume='', number=''
     return: (string)
     2011, Volume: 67, Number: 9, Supplement: 3
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = ['%Y']
 
@@ -608,7 +584,7 @@ def descriptive_very_short_format(*ignore_args, pubdate='', volume='', number=''
     return output.format(', '.join(template))
 
 
-def descriptive_html_very_short_format(*ignore_args, pubdate='', volume='', number='', suppl='', language='en'):
+def descriptive_html_very_short_format(pubdate='', volume='', number='', suppl='', language='en'):
     """
     Return a short version of a bibliografic legend, according to the given
     parameters.
@@ -633,9 +609,6 @@ def descriptive_html_very_short_format(*ignore_args, pubdate='', volume='', numb
       <span class="value supplement">3</span
     </div>
     """
-
-    if ignore_args:  # If ignore is not empty
-        raise TypeError('Arguments not allowed')
 
     template = []
     template.append('<div class="biblio_label">')
