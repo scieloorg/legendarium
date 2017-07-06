@@ -31,4 +31,9 @@ translations = {
         "es": "Numero del articulo",
         "en": "Article number"
     },
+    "published": {
+        "pt": "Publicado",
+        "es": "Publicado",
+        "en": "Published"
+    }
 }

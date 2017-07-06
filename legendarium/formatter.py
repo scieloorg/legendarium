@@ -1,6 +1,7 @@
 # coding: utf-8
-
 import re
+import locale
+
 from datetime import datetime
 
 from legendarium.utils import translations
@@ -34,7 +35,7 @@ def parse_date(value):
                 dt = datetime.strptime(value, '%Y')
                 return dt.isoformat()[:4]
             except:
-                raise ValueError(u'Probably not a valid year')
+                raise ValueError(u'Probably not a valid date')
 
 
 class CitationFormatter:
@@ -95,6 +96,22 @@ class CitationFormatter:
     def yearpubdata(self):
 
         return self._pubdate[0:4]
+
+    @property
+    def descriptive_dmy_date(self):
+
+        if len(self._pubdate) == 10:
+            dt = datetime.strptime(self._pubdate, '%Y-%m-%d')
+            dt = dt.strftime('%d %b %Y').upper()
+
+        if len(self._pubdate) == 7:
+            dt = datetime.strptime(self._pubdate, '%Y-%m')
+            dt = dt.strftime('%b %Y').upper()
+
+        if len(self._pubdate) == 4:
+            dt = self._pubdate
+
+        return dt
 
     @property
     def pubdate(self):
@@ -199,6 +216,7 @@ class CitationFormatter:
             '%T': self.title,
             '%t': self.short_title,
             '%Y': self.yearpubdata,
+            '%D': self.descriptive_dmy_date,
             '%v': self.volume,
             '%n': self.number,
             '%s': self.suppl,
@@ -328,7 +346,7 @@ def descriptive_format(title='', short_title='', pubdate='', volume='', number='
     Revista Mal-Estar Subjetivo, 2011, volume: 67, number: 9, supplement: 3, pages: 154-200
     """
 
-    template = ['%T, %Y']
+    template = ['%T']
 
     if volume:
         template.append(translations['volume'][language]+': %v')
@@ -349,6 +367,8 @@ def descriptive_format(title='', short_title='', pubdate='', volume='', number='
         if (fpage or lpage):
             template.pop()
         template.append(translations['article number'][language]+': %e')
+
+    template.append(translations['published'][language]+': %D')
 
     output = CitationFormatter(
         title=title,
@@ -399,7 +419,6 @@ def descriptive_html_format(title='', short_title='', pubdate='', volume='', num
     template = []
     template.append('<div class="biblio_label">')
     template.append('<span class="title">%T</span>')
-    template.append('<span class="year">%Y</span>')
 
     if volume:
         template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
@@ -418,6 +437,7 @@ def descriptive_html_format(title='', short_title='', pubdate='', volume='', num
             template.pop()
         template.append('<span class="prefix pages">'+translations['article number'][language]+':</span> <span class="value pages">%e</span>')
 
+    template.append('<span class="prefix published">'+translations['published'][language]+':</span> <span class="value published">%D</span>')
     template.append('</div>')
 
     output = CitationFormatter(
@@ -452,7 +472,7 @@ def descriptive_short_format(title='', short_title='', pubdate='', volume='', nu
     Revista Mal-Estar Subjetivo, 2011, Volume: 67, Number: 9, Supplement: 3
     """
 
-    template = ['%T, %Y']
+    template = ['%T']
 
     if volume:
         template.append(translations['volume'][language]+': %v')
@@ -465,6 +485,8 @@ def descriptive_short_format(title='', short_title='', pubdate='', volume='', nu
             template[-1] += ' '+translations['supplement'][language]
         else:
             template[-1] += ' '+translations['supplement'][language]+' %s'
+
+    template.append(translations['published'][language]+': %D')
 
     output = CitationFormatter(
         title=title,
@@ -510,7 +532,6 @@ def descriptive_html_short_format(title='', short_title='', pubdate='', volume='
     template = []
     template.append('<div class="biblio_label">')
     template.append('<span class="title">%T</span>')
-    template.append('<span class="year">%Y</span>')
 
     if volume:
         template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
@@ -520,7 +541,7 @@ def descriptive_html_short_format(title='', short_title='', pubdate='', volume='
 
     if suppl:
         template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
-
+    template.append('<span class="prefix published">'+translations['published'][language]+':</span> <span class="value published">%D</span>')
     template.append('</div>')
 
     output = CitationFormatter(
