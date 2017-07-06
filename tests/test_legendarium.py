@@ -268,6 +268,28 @@ class TestLegendarium(unittest.TestCase):
             result
         )
 
+    def test_descriptive_format_number_only(self):
+
+        data = {
+            'title': 'Cadernos Pagu ',
+            'short_title': 'Cad. Pagu',
+            'pubdate': '2017',
+            'volume': '',
+            'number': '50',
+            'suppl': '',
+            'fpage': '',
+            'lpage': '',
+            'elocation': 'e175002'
+        }
+
+        result = descriptive_format(**data)
+
+        self.assertEqual(
+            'Cadernos Pagu, 2017, Number: 50, Article number: e175002',
+            result
+
+        )
+
     def test_descriptive_format_suppl_number(self):
 
         data = {

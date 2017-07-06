@@ -345,9 +345,10 @@ def descriptive_format(*, title, short_title, pubdate, volume, number, fpage, lp
     if fpage or lpage:
         template.append(translations['pages'][language]+': %p')
 
-    if elocation:
+    if elocation and (fpage or lpage):
         template.pop()
-        template.append(translations['article number'][language]+': %e')
+
+    template.append(translations['article number'][language]+': %e')
 
     output = CitationFormatter(
         title=title,
@@ -411,9 +412,10 @@ def descriptive_html_format(*, title, short_title, pubdate, volume='', number=''
     if fpage or lpage:
         template.append('<span class="prefix pages">'+translations['pages'][language]+':</span> <span class="value pages">%p</span>')
 
-    if elocation:
+    if elocation and (fpage or lpage):
         template.pop()
-        template.append('<span class="prefix pages">'+translations['article number'][language]+':</span> <span class="value pages">%e</span>')
+
+    template.append('<span class="prefix pages">'+translations['article number'][language]+':</span> <span class="value pages">%e</span>')
 
     template.append('</div>')
 
