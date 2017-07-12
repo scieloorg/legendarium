@@ -352,7 +352,7 @@ def descriptive_format(title='', short_title='', pubdate='', volume='', number='
         template.append(translations['volume'][language]+': %v')
 
     if number:
-        template.append(translations['number'][language]+': %n')
+        template.append(translations['issue'][language]+': %n')
 
     if suppl:
         if suppl == '0':
@@ -424,7 +424,7 @@ def descriptive_html_format(title='', short_title='', pubdate='', volume='', num
         template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
 
     if number:
-        template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
+        template.append('<span class="prefix number">'+translations['issue'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
         template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
@@ -478,7 +478,7 @@ def descriptive_short_format(title='', short_title='', pubdate='', volume='', nu
         template.append(translations['volume'][language]+': %v')
 
     if number:
-        template.append(translations['number'][language]+': %n')
+        template.append(translations['issue'][language]+': %n')
 
     if suppl:
         if suppl == '0':
@@ -537,7 +537,7 @@ def descriptive_html_short_format(title='', short_title='', pubdate='', volume='
         template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
 
     if number:
-        template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
+        template.append('<span class="prefix number">'+translations['issue'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
         template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')
@@ -582,7 +582,7 @@ def descriptive_very_short_format(pubdate='', volume='', number='', suppl='', la
         template.append(translations['volume'][language]+': %v')
 
     if number:
-        template.append(translations['number'][language]+': %n')
+        template.append(translations['issue'][language]+': %n')
 
     if suppl:
         if suppl == '0':
@@ -638,7 +638,7 @@ def descriptive_html_very_short_format(pubdate='', volume='', number='', suppl='
         template.append('<span class="prefix volume">'+translations['volume'][language]+':</span> <span class="value volume">%v</span>')
 
     if number:
-        template.append('<span class="prefix number">'+translations['number'][language]+':</span> <span class="value number">%n</span>')
+        template.append('<span class="prefix number">'+translations['issue'][language]+':</span> <span class="value number">%n</span>')
 
     if suppl:
         template.append('<span class="prefix supplement">'+translations['supplement'][language]+'</span> <span class="value supplement">%s</span>')

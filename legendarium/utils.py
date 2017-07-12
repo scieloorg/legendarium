@@ -6,14 +6,14 @@ translations = {
         "es": "Volumen",
         "en": "Volume"
     },
-    "number": {
+    "issue": {
         "pt": u"Número",
         "es": "Numero",
-        "en": "Number"
+        "en": "Issue"
     },
     "pages": {
         "pt": u"Páginas",
-        "es": "Paginas",
+        "es": "Páginas",
         "en": "Pages"
     },
     "supplement": {
@@ -28,7 +28,7 @@ translations = {
     },
     "article number": {
         "pt": "Número do artigo",
-        "es": "Numero del articulo",
+        "es": "Numero del artículo",
         "en": "Article number"
     },
     "published": {

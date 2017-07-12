@@ -19,7 +19,7 @@ test_requirements = [
 
 setup(
     name='legendarium',
-    version='1.2.2',
+    version='1.4.0',
     description="Python library to handle SciELO's bibliographic legend",
     long_description=readme + '\n\n' + history,
     author="Jamil Atta Junior",
