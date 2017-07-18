@@ -6,16 +6,17 @@ import re
 class URLegendarium(object):
 
     def __init__(self, acron='', year_pub='', volume='', number='',
-                 fpage='', lpage='', article_id='', suppl_number=''):
+                 fpage='', fpage_sequence='', lpage='', article_id='', suppl_number=''):
 
-        self.acron = acron
-        self.year_pub = str(year_pub)
-        self.volume = volume
-        self.number = number
-        self.suppl_number = suppl_number
-        self.fpage = fpage
-        self.lpage = lpage
-        self.article_id = article_id
+        self.acron = str(acron).strip()
+        self.year_pub = str(year_pub).strip()
+        self.volume = str(volume).strip()
+        self.number = str(number).strip()
+        self.suppl_number = str(suppl_number).strip()
+        self.fpage = str(fpage).strip()
+        self.fpage_sequence = str(fpage_sequence).strip()
+        self.lpage = str(lpage).strip()
+        self.article_id = str(article_id).strip()
 
     def __unicode__(self):
         return self.url_article
@@ -125,15 +126,21 @@ class URLegendarium(object):
         if self.article_id:
             article = self.article_id
         elif self.fpage and self.lpage:
-            article = u'{0}-{1}'.format(self.fpage, self.lpage)
+            if self.fpage_sequence:
+                article = u'{0}_{1}-{2}'.format(self.fpage, self.fpage_sequence, self.lpage)
+            else:
+                article = u'{0}-{1}'.format(self.fpage, self.lpage)
         elif self.fpage:
-            article = self.fpage
+            if self.fpage_sequence:
+                article = u'{0}_{1}'.format(self.fpage, self.fpage_sequence)
+            else:
+                article = self.fpage
         elif self.lpage:
             article = self.lpage
         else:
             return article
 
-        return u'{0}'.format(article)
+        return article
 
     @property
     def url_journal(self):

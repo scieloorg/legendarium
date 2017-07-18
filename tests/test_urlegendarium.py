@@ -17,6 +17,23 @@ class TestLegendarium(unittest.TestCase):
                          'article_id': u'e00120416'
                          }
 
+    def test_build_url_article_with_sequence(self):
+        del(self.dict_leg['article_id'])
+        self.dict_leg['fpage_sequence'] = 1
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9suppl3/154_1-200', str(leg))
+
+    def test_build_url_article_with_sequence_without_last_page(self):
+        del(self.dict_leg['article_id'])
+        del(self.dict_leg['lpage'])
+        self.dict_leg['fpage_sequence'] = 1
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9suppl3/154_1', str(leg))
+
     def test_build_url_journal_with_all_param(self):
         leg = URLegendarium(**self.dict_leg)
 
