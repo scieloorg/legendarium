@@ -6,7 +6,8 @@ import re
 class URLegendarium(object):
 
     def __init__(self, acron='', year_pub='', volume='', number='',
-                 fpage='', fpage_sequence='', lpage='', article_id='', suppl_number=''):
+                 fpage='', fpage_sequence='', lpage='', article_id='',
+                 suppl_number='', doi='', order=''):
 
         self.acron = str(acron).strip()
         self.year_pub = str(year_pub).strip()
@@ -17,6 +18,8 @@ class URLegendarium(object):
         self.fpage_sequence = str(fpage_sequence).strip()
         self.lpage = str(lpage).strip()
         self.article_id = str(article_id).strip()
+        self.doi = str(doi).strip()
+        self.order = str(order).strip()
 
     def __unicode__(self):
         return self.url_article
@@ -137,6 +140,10 @@ class URLegendarium(object):
                 article = self.fpage
         elif self.lpage:
             article = self.lpage
+        elif self.doi:
+            article = self.doi
+        elif self.order:
+            article = u'o{0}'.format(self.order)
         else:
             return article
 

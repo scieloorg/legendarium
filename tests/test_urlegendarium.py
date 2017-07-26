@@ -111,6 +111,43 @@ class TestLegendarium(unittest.TestCase):
 
         self.assertEqual(u'spm/2011.v67n9suppl3', leg.url_issue)
 
+    def test_build_url_article_with_doi_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
+        del(self.dict_leg['article_id'])
+        del(self.dict_leg['lpage'])
+        del(self.dict_leg['fpage'])
+
+        self.dict_leg['doi'] = '10.1590/0102-6720201600S10001'
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9/10.1590/0102-6720201600S10001', leg.url_article)
+
+    def test_build_url_article_with_order_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
+        del(self.dict_leg['article_id'])
+        del(self.dict_leg['lpage'])
+        del(self.dict_leg['fpage'])
+
+        self.dict_leg['order'] = '5'
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9/o5', leg.url_article)
+
+    def test_build_url_article_with_doi_and_order_param(self):
+        del(self.dict_leg['suppl_number'])  # Remove the suppl_number
+        del(self.dict_leg['article_id'])
+        del(self.dict_leg['lpage'])
+        del(self.dict_leg['fpage'])
+
+        self.dict_leg['order'] = '5'
+        self.dict_leg['doi'] = '10.1590/0102-6720201600S10001'
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.v67n9/10.1590/0102-6720201600S10001', leg.url_article)
+
 
 if __name__ == "__main__":
     unittest.main()
