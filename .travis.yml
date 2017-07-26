@@ -26,3 +26,10 @@ matrix:
       - python: 3.6
         env: TOX_ENV=py36
 script: tox -e $TOX_ENV
+
+addons:
+  apt:
+    packages:
+      - language-pack-en
+      - language-pack-es
+      - language-pack-pt
