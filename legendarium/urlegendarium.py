@@ -9,17 +9,17 @@ class URLegendarium(object):
                  fpage='', fpage_sequence='', lpage='', article_id='',
                  suppl_number='', doi='', order=''):
 
-        self.acron = str(acron).strip()
-        self.year_pub = str(year_pub).strip()
-        self.volume = str(volume).strip()
-        self.number = str(number).strip()
-        self.suppl_number = str(suppl_number).strip()
-        self.fpage = str(fpage).strip()
-        self.fpage_sequence = str(fpage_sequence).strip()
-        self.lpage = str(lpage).strip()
-        self.article_id = str(article_id).strip()
-        self.doi = str(doi).strip()
-        self.order = str(order).strip()
+        self.acron = str(acron).strip() if acron else ''
+        self.year_pub = str(year_pub).strip() if year_pub else ''
+        self.volume = str(volume).strip() if volume else ''
+        self.number = str(number).strip() if number else ''
+        self.suppl_number = str(suppl_number).strip() if suppl_number else ''
+        self.fpage = str(fpage).strip() if fpage else ''
+        self.fpage_sequence = str(fpage_sequence).strip() if fpage_sequence else ''
+        self.lpage = str(lpage).strip() if lpage else ''
+        self.article_id = str(article_id).strip() if article_id else ''
+        self.doi = str(doi).strip() if doi else ''
+        self.order = str(order).strip() if order else ''
 
     def __unicode__(self):
         return self.url_article
