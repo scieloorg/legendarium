@@ -111,6 +111,22 @@ class TestLegendarium(unittest.TestCase):
 
         self.assertEqual(u'spm/2011.v67n9suppl3', leg.url_issue)
 
+    def test_build_url_issue_no_volume(self):
+
+        del(self.dict_leg['volume'])    # Remove the volume
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.n9suppl3', leg.url_issue)
+
+    def test_build_url_issue_alphanum_volume(self):
+
+        self.dict_leg['volume'] = u'alphavol'
+
+        leg = URLegendarium(**self.dict_leg)
+
+        self.assertEqual(u'spm/2011.valphavoln9suppl3', leg.url_issue)
+
     def test_build_url_article_with_doi_param(self):
         del(self.dict_leg['suppl_number'])  # Remove the suppl_number
         del(self.dict_leg['article_id'])
