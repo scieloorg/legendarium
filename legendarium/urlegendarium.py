@@ -54,9 +54,12 @@ class URLegendarium(object):
 
     def _clean_volume(self):
         """
-        Clean the volume removing all caracter and keep just numbers.
+        Clean the volume stripped the beginning and the end of the string.
         """
-        return self._get_numbers(self.volume)
+        if self.volume:
+            return self.volume.strip()
+        else:
+            return ''
 
     def _clean_number(self):
         """

@@ -32,6 +32,7 @@ class TestLegendarium(unittest.TestCase):
 
         self.legendarium = CitationFormatter(**self.sample)
 
+    @unittest.skip("Retirar setlocale do teste")
     def test_descriptive_ymd_date_pt(self):
 
         import locale
@@ -47,6 +48,7 @@ class TestLegendarium(unittest.TestCase):
             legendarium.descriptive_dmy_date
         )
 
+    @unittest.skip("Retirar setlocale do teste")
     def test_descriptive_ymd_date_en(self):
 
         import locale
@@ -62,6 +64,7 @@ class TestLegendarium(unittest.TestCase):
             legendarium.descriptive_dmy_date
         )
 
+    @unittest.skip("Retirar setlocale do teste")
     def test_descriptive_ymd_date_es(self):
 
         import locale
