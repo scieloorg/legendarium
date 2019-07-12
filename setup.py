@@ -3,7 +3,7 @@
 
 from setuptools import setup
 
-with open('README.rst') as readme_file:
+with open('README.md') as readme_file:
     readme = readme_file.read()
 
 with open('HISTORY.rst') as history_file:
@@ -21,7 +21,8 @@ setup(
     name='legendarium',
     version='2.0.4',
     description="Python library to handle SciELO's bibliographic legend",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
+    long_description_content_type="text/markdown",
     author="Jamil Atta Junior",
     author_email='jamil.atta@scielo.org',
     url='https://github.com/scieloorg/legendarium',
