@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
@@ -17,17 +17,15 @@ test_requirements = [
 setup(
     name='legendarium',
     version='2.0.5',
-    description="Python library to handle SciELO's bibliographic legend",
+    description="Python library to handle SciELO's bibliographic strip",
     long_description=readme,
     long_description_content_type="text/markdown",
     author="Jamil Atta Junior",
     author_email='jamil.atta@scielo.org',
     url='https://github.com/scieloorg/legendarium',
-    packages=[
-        'legendarium',
-    ],
-    package_dir={'legendarium':
-                 'legendarium'},
+    packages=find_packages(
+        exclude=["*.tests", "*.tests.*", "tests.*", "tests", "docs"]
+    ),
     include_package_data=True,
     install_requires=requirements,
     license="BSD license",
