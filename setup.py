@@ -6,9 +6,6 @@ from setuptools import setup
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
 requirements = [
     # TODO: put package requirements here
 ]
@@ -19,7 +16,7 @@ test_requirements = [
 
 setup(
     name='legendarium',
-    version='2.0.4',
+    version='2.0.5',
     description="Python library to handle SciELO's bibliographic legend",
     long_description=readme,
     long_description_content_type="text/markdown",
