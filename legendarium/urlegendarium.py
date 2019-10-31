@@ -121,7 +121,7 @@ class URLegendarium(object):
             # We give preference to number
             return u'{0}.{1}{2}{3}'.format(year, volume, number, suppl)
         else:
-            raise ValueError(u'Year or Volume or Year must exists to form URL Issue Segment')
+            raise ValueError(u'Year or Volume or Number or Supplement must exist to form URL Issue Segment')
 
     def get_article_seg(self):
         """
