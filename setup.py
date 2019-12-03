@@ -16,7 +16,7 @@ test_requirements = [
 
 setup(
     name='legendarium',
-    version='2.0.5',
+    version='2.0.6',
     description="Python library to handle SciELO's bibliographic strip",
     long_description=readme,
     long_description_content_type="text/markdown",
